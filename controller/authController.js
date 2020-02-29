@@ -9,6 +9,7 @@ const sendToken = async (user, res, statusCode) => {
     expiresIn: envVar.jwt_expires
   });
 
+  user.password = undefined;
   res.status(statusCode).json({
     success: true,
     token,
@@ -32,16 +33,18 @@ exports.register = catchAsync(async (req, res, next) => {
 //@desc   Login Users
 //@route  POST /api/auth/login
 //@access public
-exports.login = (req, res, next) => {
-  try {
-    res.status(201).json({
-      success: true,
-      data: 'login'
-    });
-  } catch (err) {
-    res.status(400).json({
-      success: false,
-      msg: err.msg
-    });
+exports.login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return next(new AppError('email and password are required', 400));
   }
-};
+
+  const user = await Users.findOne({ email }).select('+password');
+
+  if (!user || !(await user.comparePassword(password, user.password))) {
+    return next(new AppError('Invalid Credentials', 401));
+  }
+
+  sendToken(user, res, 201);
+});

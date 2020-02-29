@@ -18,7 +18,8 @@ const UsersSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'password is required'],
-    minlength: 8
+    minlength: 8,
+    select: false
   },
   passwordConfirm: {
     type: String,
@@ -58,5 +59,12 @@ UsersSchema.pre('save', function(next) {
   this.createdAt = new Date();
   next();
 });
+
+UsersSchema.methods.comparePassword = async function(
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
 
 module.exports = mongoose.model('Users', UsersSchema);
