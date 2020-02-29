@@ -1,7 +1,10 @@
+/* eslint-disable node/no-unpublished-require */
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const Mail = require('@fullstackjs/mail');
+const envVar = require('../config/index');
 
 const UsersSchema = new mongoose.Schema({
   name: {
@@ -66,5 +69,20 @@ UsersSchema.methods.comparePassword = async function(
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
+
+UsersSchema.post('save', async function() {
+  try {
+    return await new Mail('confirm-account')
+      .to(this.email, this.name)
+      .subject('confirm email')
+      .data({
+        url: `${envVar.base_url}/emails/confirm/${this.emailConfirmCode}`,
+        name: this.name
+      })
+      .send();
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 module.exports = mongoose.model('Users', UsersSchema);
