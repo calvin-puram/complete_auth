@@ -7,13 +7,18 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "nodemon server.js"
+    "server-dev": "nodemon server.js",
+    "server": "node server.js",
+    "client-install": "npm install --prefix client",
+    "client": "npm run serve --prefix client",
+    "dev": "concurrently \" npm run server-dev\" \"npm run client\""
   },
   "author": "calvin Job <puram.calvin@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@fullstackjs/mail": "^1.0.7",
     "bcryptjs": "^2.4.3",
+    "concurrently": "^5.1.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
@@ -22,6 +27,7 @@
     "validator": "^12.2.0"
   },
   "devDependencies": {
+    "babel-plugin-module-resolver": "^4.0.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.9.0",
