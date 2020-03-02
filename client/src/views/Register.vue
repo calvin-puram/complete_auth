@@ -74,12 +74,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import formmixin from '../mixin/formmixin';
 
 export default {
   computed: mapGetters(['getErrors']),
+  mixins: [formmixin],
   data() {
     return {
-      loading: false,
       model: {
         name: '',
         email: '',
@@ -90,9 +91,7 @@ export default {
   },
   methods: {
     ...mapActions(['registerUser']),
-    toggleLoading() {
-      this.loading = !this.loading;
-    },
+
     register() {
       this.$validator.validate().then(isValid => {
         if (!isValid) {
@@ -102,11 +101,7 @@ export default {
         this.registerUser(this.model).then(res => {
           this.toggleLoading();
           if (res && res.data.success) {
-            localStorage.setItem(
-              'auth',
-              JSON.stringify({ token: res.data.token, user: res.data.user })
-            );
-            this.$router.push('/');
+            this.setAuth(res.data);
             this.$noty.success('Your profile has been saved!');
           } else {
             this.$noty.error(this.getErrors);

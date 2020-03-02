@@ -20,16 +20,16 @@
           <li class="nav-item active">
             <router-link to="/" exact class="nav-link">Home</router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="!auth">
             <router-link to="/register" exact class="nav-link"
               >Register</router-link
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="!auth">
             <router-link to="/login" exact class="nav-link">Login</router-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Logout</a>
+          <li class="nav-item" v-if="auth">
+            <a class="nav-link" href="#" @click.prevent="unsetAuth">Logout</a>
           </li>
         </ul>
       </div>
