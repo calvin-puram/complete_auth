@@ -64,6 +64,19 @@ const actions = {
     } catch (err) {
       commit('error', err.response.data.msg);
     }
+  },
+
+  //confirm account
+  async confirmAccount({ commit }, dataa) {
+    try {
+      const res = await client.patch('/email/confirm', dataa);
+      if (res && res.data.success) {
+        commit('register_state', res.data);
+      }
+      return res;
+    } catch (err) {
+      commit('error', err.response.data.msg);
+    }
   }
 };
 

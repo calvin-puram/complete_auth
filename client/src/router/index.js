@@ -5,6 +5,7 @@ import Login from '@views/Login.vue';
 import Register from '@views/Register.vue';
 import ForgotPassword from '@views/ForgotPassword.vue';
 import ResetPassword from '@views/ResetPassword.vue';
+import ConfirmAccount from '@views/ConfirmAccount.vue';
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,10 @@ const routes = [
   {
     path: '/resetPassword/:token',
     component: ResetPassword
+  },
+  {
+    path: '/emails/confirm/:token',
+    component: ConfirmAccount
   }
 ];
 

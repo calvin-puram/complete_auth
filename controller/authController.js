@@ -104,19 +104,21 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 //@access public
 exports.confirmAccount = catchAsync(async (req, res, next) => {
   const { token } = req.body;
-  const hashedToken = crypto
-    .createHash('sha256')
-    .update(token)
-    .digest('hex');
-  const user = await Users.findOne({ emailConfirmCode: hashedToken });
 
-  if (!user) {
+  const currentUser = await Users.findOne({ emailConfirmCode: token });
+
+  if (!currentUser) {
     return next(new AppError('invalid credentials', 401));
   }
 
-  user.emailConfirmCode = null;
-  user.emailConfirmDate = Date.now;
-  await user.save({ validateBeforeSave: false });
+  const user = await Users.findByIdAndUpdate(
+    { _id: currentUser._id },
+    {
+      emailConfirmCode: null,
+      emailConfirmDate: Date.now()
+    },
+    { new: true }
+  );
 
   sendToken(user, res, 200);
 });

@@ -39,7 +39,8 @@ const UsersSchema = new mongoose.Schema({
   emailConfirmDate: Date,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
-  passwordChangeAt: Date
+  passwordChangeAt: Date,
+  createdAt: Date
 });
 
 UsersSchema.pre('save', async function(next) {
@@ -53,10 +54,7 @@ UsersSchema.pre('save', async function(next) {
 
 UsersSchema.pre('save', function(next) {
   const token = crypto.randomBytes(32).toString('hex');
-  this.emailConfirmCode = crypto
-    .createHash('sha256')
-    .update(token)
-    .digest('hex');
+  this.emailConfirmCode = token;
 
   this.createdAt = new Date();
   next();
