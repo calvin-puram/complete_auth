@@ -51,6 +51,19 @@ const actions = {
     } catch (err) {
       commit('error', err.response.data.msg);
     }
+  },
+
+  //reset password
+  async passwordReset({ commit }, dataa) {
+    try {
+      const res = await client.patch('/password/reset', dataa);
+      if (res && res.data.success) {
+        commit('register_state', res.data);
+      }
+      return res;
+    } catch (err) {
+      commit('error', err.response.data.msg);
+    }
   }
 };
 

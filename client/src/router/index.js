@@ -4,6 +4,7 @@ import Home from '@views/Home.vue';
 import Login from '@views/Login.vue';
 import Register from '@views/Register.vue';
 import ForgotPassword from '@views/ForgotPassword.vue';
+import ResetPassword from '@views/ResetPassword.vue';
 
 Vue.use(VueRouter);
 
@@ -23,6 +24,10 @@ const routes = [
   {
     path: '/forgot-password',
     component: ForgotPassword
+  },
+  {
+    path: '/resetPassword/:token',
+    component: ResetPassword
   }
 ];
 
