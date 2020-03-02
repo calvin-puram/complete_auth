@@ -4,7 +4,7 @@ const AppError = require('../utils/custormError');
 
 //handleDuplicate
 const handleDuplicate = () => {
-  const message = `duplicate value enter for field `;
+  const message = `duplicate value enter for email `;
   return new AppError(message, 400);
 };
 

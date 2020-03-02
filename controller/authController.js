@@ -13,7 +13,7 @@ const sendToken = async (user, res, statusCode) => {
   res.status(statusCode).json({
     success: true,
     token,
-    data: user
+    user
   });
 };
 
