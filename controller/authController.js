@@ -1,3 +1,4 @@
+/* eslint-disable node/no-unpublished-require */
 const jwt = require('jsonwebtoken');
 const Users = require('../models/Users');
 const envVar = require('../config/index');
@@ -47,4 +48,23 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   sendToken(user, res, 201);
+});
+
+//@desc   Forgot Password
+//@route  POST /api/auth/password/forgot
+//@access public
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  const { email } = req.body;
+  const user = await Users.findOne({ email });
+
+  if (!user) {
+    return next(new AppError('email not registered', 400));
+  }
+
+  await user.createForgotPasswordToken();
+
+  res.status(200).json({
+    success: true,
+    msg: 'password reset link sent'
+  });
 });

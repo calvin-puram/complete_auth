@@ -37,9 +37,11 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import formmixin from '../mixin/formmixin';
 
 export default {
+  computed: mapGetters(['getErrors']),
   mixins: [formmixin],
   data() {
     return {
@@ -49,6 +51,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['passwordForgot']),
     forgotPassword() {
       this.$validator.validate().then(isValid => {
         if (!isValid) {

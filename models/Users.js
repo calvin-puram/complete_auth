@@ -53,12 +53,11 @@ UsersSchema.pre('save', async function(next) {
 
 UsersSchema.pre('save', function(next) {
   const token = crypto.randomBytes(32).toString('hex');
-  const hashedToken = crypto
+  this.emailConfirmCode = crypto
     .createHash('sha256')
     .update(token)
     .digest('hex');
 
-  this.emailConfirmCode = hashedToken;
   this.createdAt = new Date();
   next();
 });
@@ -84,5 +83,24 @@ UsersSchema.post('save', async function() {
     console.log(err);
   }
 });
+
+UsersSchema.methods.createForgotPasswordToken = async function() {
+  const token = crypto.randomBytes(32).toString('hex');
+  this.resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(token)
+    .digest('hex');
+
+  this.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
+
+  await new Mail('forgot-password')
+    .to(this.email, this.name)
+    .subject('Reset Password Link (expires in 10mins)')
+    .data({
+      url: `${envVar.base_url}/resetPassword/${token}`,
+      name: this.name
+    })
+    .send();
+};
 
 module.exports = mongoose.model('Users', UsersSchema);
