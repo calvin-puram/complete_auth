@@ -30,18 +30,6 @@
                 />
               </div>
 
-              <div class="form-group">
-                <text-input
-                  type="password"
-                  placeholder="Confirm your Password"
-                  v-model="model.passwordConfirm"
-                  :value="model.passwordConfirm"
-                  name="passwordConfirm"
-                  v-validate="'required|min: 8'"
-                  :error="errors.first('passwordConfirm')"
-                />
-              </div>
-
               <div class="d-flex justify-content-between align-items-center">
                 <div class="form-group">
                   <button
@@ -79,8 +67,7 @@ export default {
     return {
       model: {
         email: '',
-        password: '',
-        passwordConfirm: ''
+        password: ''
       }
     };
   },

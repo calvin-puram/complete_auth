@@ -37,7 +37,7 @@
                   class="btn btn-primary"
                 >
                   <i class="fas fa-spin fa-spinner" v-if="loading"></i>
-                  {{ loading ? '' : 'Login' }}
+                  {{ loading ? '' : 'Reset Password' }}
                 </button>
               </div>
             </form>

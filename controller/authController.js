@@ -1,4 +1,5 @@
 /* eslint-disable node/no-unpublished-require */
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const Users = require('../models/Users');
 const envVar = require('../config/index');
@@ -62,9 +63,60 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   }
 
   await user.createForgotPasswordToken();
+  await user.save({ validateBeforeSave: false });
 
   res.status(200).json({
     success: true,
     msg: 'password reset link sent'
   });
+});
+
+//@desc   Reset Password
+//@route  POST /api/auth/password/reset
+//@access public
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  const { password, passwordConfirm, token } = req.body;
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(token)
+    .digest('hex');
+
+  const user = await Users.findOne({
+    resetPasswordToken: hashedToken,
+    resetPasswordExpires: { $gt: Date.now() }
+  }).select('+password');
+
+  if (!user) {
+    return next(new AppError('invalid credentials or token has expired', 401));
+  }
+
+  user.password = password;
+  user.passwordConfirm = passwordConfirm;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+  await user.save();
+
+  sendToken(user, res, 200);
+});
+
+//@desc   Confirm Account
+//@route  PUT /api/auth/email/confirm
+//@access public
+exports.confirmAccount = catchAsync(async (req, res, next) => {
+  const { token } = req.body;
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(token)
+    .digest('hex');
+  const user = await Users.findOne({ emailConfirmCode: hashedToken });
+
+  if (!user) {
+    return next(new AppError('invalid credentials', 401));
+  }
+
+  user.emailConfirmCode = null;
+  user.emailConfirmDate = Date.now;
+  await user.save({ validateBeforeSave: false });
+
+  sendToken(user, res, 200);
 });
