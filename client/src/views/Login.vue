@@ -42,15 +42,23 @@
                 />
               </div>
 
-              <div class="form-group">
-                <button
-                  type="submit"
-                  :disabled="loading"
-                  class="btn btn-primary"
-                >
-                  <i class="fas fa-spin fa-spinner" v-if="loading"></i>
-                  {{ loading ? '' : 'Login' }}
-                </button>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="form-group">
+                  <button
+                    type="submit"
+                    :disabled="loading"
+                    class="btn btn-primary"
+                  >
+                    <i class="fas fa-spin fa-spinner" v-if="loading"></i>
+                    {{ loading ? '' : 'Login' }}
+                  </button>
+                </div>
+
+                <div class="form-group">
+                  <router-link to="/forgot-password" class="text-center my-2"
+                    >forgot password?</router-link
+                  >
+                </div>
               </div>
             </form>
           </div>

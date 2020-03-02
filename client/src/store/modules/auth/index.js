@@ -41,6 +41,16 @@ const actions = {
   // logout
   logout({ commit }) {
     commit('logout_res');
+  },
+
+  //password forgot
+  async passwordForgot({ commit }, dataa) {
+    try {
+      const res = await client.post('/password/forgot', dataa);
+      return res;
+    } catch (err) {
+      commit('error', err.response.data.msg);
+    }
   }
 };
 
