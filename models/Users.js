@@ -40,10 +40,12 @@ const UsersSchema = new mongoose.Schema({
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   passwordChangeAt: Date,
-  createdAt: Date
+  createdAt: Date,
+  wasNew: Boolean
 });
 
 UsersSchema.pre('save', async function(next) {
+  this.wasNew = this.isNew;
   if (!this.isModified('password')) next();
   this.password = await bcrypt.hash(this.password, 12);
 
@@ -68,6 +70,12 @@ UsersSchema.methods.comparePassword = async function(
 };
 
 UsersSchema.post('save', async function() {
+  if (!this.isModified('email') && this.wasNew) {
+    await this.sendEmailConfirm();
+  }
+});
+
+UsersSchema.methods.sendEmailConfirm = async function() {
   try {
     return await new Mail('confirm-account')
       .to(this.email, this.name)
@@ -80,7 +88,7 @@ UsersSchema.post('save', async function() {
   } catch (err) {
     console.log(err);
   }
-});
+};
 
 UsersSchema.methods.createForgotPasswordToken = async function() {
   const token = crypto.randomBytes(32).toString('hex');

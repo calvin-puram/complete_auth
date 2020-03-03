@@ -1,4 +1,5 @@
 /* eslint-disable node/no-unpublished-require */
+const { promisify } = require('util');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const Users = require('../models/Users');
@@ -90,11 +91,17 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     return next(new AppError('invalid credentials or token has expired', 401));
   }
 
-  user.password = password;
-  user.passwordConfirm = passwordConfirm;
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpires = undefined;
-  await user.save();
+  try {
+    user.password = password;
+    user.passwordConfirm = passwordConfirm;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+  } catch {
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+  }
 
   sendToken(user, res, 200);
 });
@@ -121,4 +128,49 @@ exports.confirmAccount = catchAsync(async (req, res, next) => {
   );
 
   sendToken(user, res, 200);
+});
+
+//@desc   protect route
+//@route  middleware
+exports.protect = catchAsync(async (req, res, next) => {
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    return next(new AppError('you are not logged in', 401));
+  }
+
+  const decode = await promisify(jwt.verify)(token, envVar.jwt_secret);
+
+  // check if user exist
+  const currentUser = await Users.findById(decode.id).select('+password');
+
+  if (!currentUser) {
+    return next(new AppError('user no longer exist', 401));
+  }
+
+  req.user = currentUser;
+
+  //authorize user
+  next();
+});
+
+//@desc   Resend Confirm Password
+//@route  Post /api/auth/email/resend
+//@access Private
+exports.resendEmailConfirm = catchAsync(async (req, res, next) => {
+  if (!req.user.emailConfirmDate) {
+    await req.user.sendEmailConfirm();
+  }
+
+  res.status(200).json({
+    success: true,
+    msg: 'confirm email sent'
+  });
 });

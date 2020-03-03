@@ -1,4 +1,4 @@
-import client from '@utils/axios';
+import axios from 'axios';
 const initState = {
   user: null,
   token: null,
@@ -16,7 +16,10 @@ const actions = {
   //Register
   async registerUser({ commit }, dataa) {
     try {
-      const res = await client.post('/register', dataa);
+      const res = await axios.post(
+        'http://localhost:3200/api/v1/auth/register',
+        dataa
+      );
       if (res.data.success) {
         commit('register_state', res.data);
       }
@@ -29,7 +32,10 @@ const actions = {
   //Login
   async loginUser({ commit }, dataa) {
     try {
-      const res = await client.post('/login', dataa);
+      const res = await axios.post(
+        'http://localhost:3200/api/v1/auth/login',
+        dataa
+      );
       if (res.data.success) {
         commit('register_state', res.data);
       }
@@ -46,7 +52,10 @@ const actions = {
   //password forgot
   async passwordForgot({ commit }, dataa) {
     try {
-      const res = await client.post('/password/forgot', dataa);
+      const res = await axios.post(
+        'http://localhost:3200/api/v1/auth/password/forgot',
+        dataa
+      );
       return res;
     } catch (err) {
       commit('error', err.response.data.msg);
@@ -56,7 +65,10 @@ const actions = {
   //reset password
   async passwordReset({ commit }, dataa) {
     try {
-      const res = await client.patch('/password/reset', dataa);
+      const res = await axios.patch(
+        'http://localhost:3200/api/v1/auth/password/reset',
+        dataa
+      );
       if (res && res.data.success) {
         commit('register_state', res.data);
       }
@@ -69,10 +81,26 @@ const actions = {
   //confirm account
   async confirmAccount({ commit }, dataa) {
     try {
-      const res = await client.patch('/email/confirm', dataa);
+      const res = await axios.patch(
+        'http://localhost:3200/api/v1/auth/email/confirm',
+        dataa
+      );
       if (res && res.data.success) {
         commit('register_state', res.data);
       }
+      return res;
+    } catch (err) {
+      commit('error', err.response.data.msg);
+    }
+  },
+
+  // resend email {
+  async emailResend({ commit }) {
+    try {
+      const res = await axios.post(
+        'http://localhost:3200/api/v1/auth/email/resend'
+      );
+
       return res;
     } catch (err) {
       commit('error', err.response.data.msg);
