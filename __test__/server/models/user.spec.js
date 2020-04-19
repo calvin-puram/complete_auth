@@ -2,7 +2,10 @@
  * @jest-environment node
  */
 
+/* eslint-disable no-undef */
+
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 dotenv.config({ path: './.env' });
@@ -22,5 +25,7 @@ describe('The Users Model', () => {
 
     const currentUser = await Users.create(user);
     expect(bcrypt.compareSync(user.password, currentUser.password)).toBe(true);
+
+    await mongoose.connection.close();
   });
 });
