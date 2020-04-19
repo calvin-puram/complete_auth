@@ -25,7 +25,7 @@ const actions = {
       }
       return res;
     } catch (err) {
-      commit('error', err.response.data.msg);
+      commit('error', err.response.data.error);
     }
   },
 
@@ -41,7 +41,7 @@ const actions = {
       }
       return res;
     } catch (err) {
-      commit('error', err.response.data.msg);
+      commit('error', err.response.data.error);
     }
   },
   // logout
@@ -58,7 +58,7 @@ const actions = {
       );
       return res;
     } catch (err) {
-      commit('error', err.response.data.msg);
+      commit('error', err.response.data.error);
     }
   },
 
@@ -74,7 +74,7 @@ const actions = {
       }
       return res;
     } catch (err) {
-      commit('error', err.response.data.msg);
+      commit('error', err.response.data.error);
     }
   },
 
@@ -90,7 +90,7 @@ const actions = {
       }
       return res;
     } catch (err) {
-      commit('error', err.response.data.msg);
+      commit('error', err.response.data.error);
     }
   },
 
@@ -103,7 +103,7 @@ const actions = {
 
       return res;
     } catch (err) {
-      commit('error', err.response.data.msg);
+      commit('error', err.response.data.error);
     }
   }
 };

@@ -3,13 +3,12 @@ const { promisify } = require('util');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const Users = require('../models/Users');
-const envVar = require('../config/index');
 const AppError = require('../utils/custormError');
 const catchAsync = require('../utils/catchAsync');
 
 const sendToken = async (user, res, statusCode) => {
-  const token = jwt.sign({ id: user.id }, envVar.jwt_secret, {
-    expiresIn: envVar.jwt_expires
+  const token = jwt.sign({ id: user.id }, process.env.JWT_SECERT, {
+    expiresIn: process.env.JWT_EXPIRES
   });
 
   user.password = undefined;
@@ -146,7 +145,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError('you are not logged in', 401));
   }
 
-  const decode = await promisify(jwt.verify)(token, envVar.jwt_secret);
+  const decode = await promisify(jwt.verify)(token, process.env.JWT_SECERT);
 
   // check if user exist
   const currentUser = await Users.findById(decode.id).select('+password');

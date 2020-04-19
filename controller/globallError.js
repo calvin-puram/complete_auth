@@ -1,5 +1,4 @@
 // eslint-disable-next-line node/no-unpublished-require
-const envVar = require('../config/index');
 const AppError = require('../utils/custormError');
 
 //handleDuplicate
@@ -17,7 +16,7 @@ const handleValidation = err => {
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     success: false,
-    error: err,
+    error: err.message,
     stack: err.stack
   });
 };
@@ -39,9 +38,9 @@ const sendErrorProd = (err, res) => {
 
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
-  if (envVar.node_env === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, res);
-  } else if (envVar.node_env === 'production') {
+  } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
     error.message = err.message;
     // handleDuplicate

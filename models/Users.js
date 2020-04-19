@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const Mail = require('@fullstackjs/mail');
-const envVar = require('../config/index');
 
 const UsersSchema = new mongoose.Schema({
   name: {
@@ -81,7 +80,7 @@ UsersSchema.methods.sendEmailConfirm = async function() {
       .to(this.email, this.name)
       .subject('confirm email')
       .data({
-        url: `${envVar.base_url}/emails/confirm/${this.emailConfirmCode}`,
+        url: `${process.env.BASE_URL}/emails/confirm/${this.emailConfirmCode}`,
         name: this.name
       })
       .send();
@@ -103,7 +102,7 @@ UsersSchema.methods.createForgotPasswordToken = async function() {
     .to(this.email, this.name)
     .subject('Reset Password Link (expires in 10mins)')
     .data({
-      url: `${envVar.base_url}/resetPassword/${token}`,
+      url: `${process.env.BASE_URL}/resetPassword/${token}`,
       name: this.name
     })
     .send();
