@@ -25,6 +25,7 @@ describe('The Users Model', () => {
 
     const currentUser = await Users.create(user);
     expect(bcrypt.compareSync(user.password, currentUser.password)).toBe(true);
+    expect(currentUser.passwordConfirm).toBeUndefined();
 
     await mongoose.connection.close();
   });
