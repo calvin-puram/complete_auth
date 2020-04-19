@@ -38,12 +38,43 @@ describe('The Users Model', () => {
     expect(currentUser.emailConfirmCode).toEqual(expect.any(String));
   });
 
-  describe('JWT Instance Method', () => {
+  describe('JWT Token Method', () => {
     it('should send JWT Token to user after registration', async () => {
       const token = await currentUser.jwtToken();
       const { id } = jwt.verify(token, process.env.JWT_SECERT);
-      console.log(typeof id, typeof JSON.stringify(currentUser._id));
+
       expect(id).toEqual(JSON.parse(JSON.stringify(currentUser._id)));
+    });
+  });
+
+  describe('The Compare Password Method', () => {
+    it('should compare the candidate password and pasword in the database', async () => {
+      const loginUser = {
+        email: 'cpuram@gmail.com',
+        password: '2begood4'
+      };
+
+      const verifyUser = await Users.findOne({ email: loginUser.email }).select(
+        '+password'
+      );
+
+      const verifiedPassword = await verifyUser.comparePassword(
+        loginUser.password,
+        verifyUser.password
+      );
+
+      expect(verifiedPassword).toBe(true);
+    });
+  });
+
+  describe('The Forgot Password', () => {
+    it('should be called when user forgot his password', async () => {
+      const email = 'cpuram@gmail.com';
+      const checkUser = await Users.findOne({ email });
+      await checkUser.createForgotPasswordToken();
+
+      expect(checkUser.resetPasswordToken).toEqual(expect.any(String));
+      // expect(checkUser.resetPasswordExpires).toBeGreaterThan(0);
     });
   });
 

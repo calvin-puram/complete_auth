@@ -82,18 +82,14 @@ UsersSchema.post('save', async function() {
 });
 
 UsersSchema.methods.sendEmailConfirm = async function() {
-  try {
-    return await new Mail('confirm-account')
-      .to(this.email, this.name)
-      .subject('confirm email')
-      .data({
-        url: `${process.env.BASE_URL}/emails/confirm/${this.emailConfirmCode}`,
-        name: this.name
-      })
-      .send();
-  } catch (err) {
-    console.log(err);
-  }
+  return await new Mail('confirm-account')
+    .to(this.email, this.name)
+    .subject('confirm email')
+    .data({
+      url: `${process.env.BASE_URL}/emails/confirm/${this.emailConfirmCode}`,
+      name: this.name
+    })
+    .send();
 };
 
 UsersSchema.methods.createForgotPasswordToken = async function() {
