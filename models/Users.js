@@ -68,11 +68,11 @@ UsersSchema.methods.comparePassword = async function(
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-UsersSchema.post('save', async function() {
-  if (!this.isModified('email') && this.wasNew) {
-    await this.sendEmailConfirm();
-  }
-});
+// UsersSchema.post('save', async function() {
+//   if (!this.isModified('email') && this.wasNew) {
+//     await this.sendEmailConfirm();
+//   }
+// });
 
 UsersSchema.methods.sendEmailConfirm = async function() {
   try {
