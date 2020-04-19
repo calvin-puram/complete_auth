@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1587327959918" clover="3.2.0">
-  <project timestamp="1587327959919" name="All files">
-    <metrics statements="41" coveredstatements="40" conditionals="6" coveredconditionals="4" methods="9" coveredmethods="9" elements="56" coveredelements="53" complexity="0" loc="41" ncloc="41" packages="2" files="2" classes="2"/>
+<coverage generated="1587328311227" clover="3.2.0">
+  <project timestamp="1587328311227" name="All files">
+    <metrics statements="41" coveredstatements="36" conditionals="6" coveredconditionals="1" methods="9" coveredmethods="6" elements="56" coveredelements="43" complexity="0" loc="41" ncloc="41" packages="2" files="2" classes="2"/>
     <package name="config">
       <metrics statements="7" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="db.js" path="C:\Users\user\Desktop\complete_auth\config\db.js">
@@ -16,9 +16,9 @@
       </file>
     </package>
     <package name="models">
-      <metrics statements="34" coveredstatements="34" conditionals="6" coveredconditionals="4" methods="8" coveredmethods="8"/>
+      <metrics statements="34" coveredstatements="30" conditionals="6" coveredconditionals="1" methods="8" coveredmethods="5"/>
       <file name="Users.js" path="C:\Users\user\Desktop\complete_auth\models\Users.js">
-        <metrics statements="34" coveredstatements="34" conditionals="6" coveredconditionals="4" methods="8" coveredmethods="8"/>
+        <metrics statements="34" coveredstatements="30" conditionals="6" coveredconditionals="1" methods="8" coveredmethods="5"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
@@ -39,14 +39,14 @@
         <line num="61" count="1" type="stmt"/>
         <line num="62" count="1" type="stmt"/>
         <line num="65" count="1" type="stmt"/>
-        <line num="66" count="1" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
         <line num="71" count="1" type="stmt"/>
         <line num="75" count="1" type="stmt"/>
         <line num="78" count="1" type="stmt"/>
-        <line num="79" count="1" type="cond" truecount="3" falsecount="1"/>
-        <line num="80" count="1" type="stmt"/>
+        <line num="79" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="80" count="0" type="stmt"/>
         <line num="84" count="1" type="stmt"/>
-        <line num="85" count="1" type="stmt"/>
+        <line num="85" count="0" type="stmt"/>
         <line num="95" count="1" type="stmt"/>
         <line num="96" count="1" type="stmt"/>
         <line num="97" count="1" type="stmt"/>
