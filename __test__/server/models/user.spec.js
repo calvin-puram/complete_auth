@@ -7,6 +7,7 @@
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 dotenv.config({ path: './.env' });
 const Users = require('../../../models/Users');
@@ -35,6 +36,15 @@ describe('The Users Model', () => {
   it('should create a confirm email code', async () => {
     // expect(currentUser.emailConfirmCode).not.toBeUndefined();
     expect(currentUser.emailConfirmCode).toEqual(expect.any(String));
+  });
+
+  describe('JWT Instance Method', () => {
+    it('should send JWT Token to user after registration', async () => {
+      const token = await currentUser.jwtToken();
+      const { id } = jwt.verify(token, process.env.JWT_SECERT);
+      console.log(typeof id, typeof JSON.stringify(currentUser._id));
+      expect(id).toEqual(JSON.parse(JSON.stringify(currentUser._id)));
+    });
   });
 
   afterAll(async () => {

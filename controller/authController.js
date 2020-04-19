@@ -7,10 +7,9 @@ const AppError = require('../utils/custormError');
 const catchAsync = require('../utils/catchAsync');
 
 const sendToken = async (user, res, statusCode) => {
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECERT, {
-    expiresIn: process.env.JWT_EXPIRES
-  });
+  const token = await user.jwtToken();
 
+  console.log(token);
   user.password = undefined;
   res.status(statusCode).json({
     success: true,

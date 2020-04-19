@@ -1,5 +1,6 @@
 /* eslint-disable node/no-unpublished-require */
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
@@ -60,6 +61,12 @@ UsersSchema.pre('save', function(next) {
   this.createdAt = new Date();
   next();
 });
+
+UsersSchema.methods.jwtToken = function() {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECERT, {
+    expiresIn: process.env.JWT_EXPIRES
+  });
+};
 
 UsersSchema.methods.comparePassword = async function(
   candidatePassword,
