@@ -30,6 +30,19 @@ describe('The Users Model', () => {
     expect(currentUser.passwordConfirm).toBeUndefined();
   });
 
+  it('should create a confirm email code', async () => {
+    const user = {
+      name: 'puram calvin',
+      email: 'cpuram@gmail.com',
+      password: '2begood4',
+      passwordConfirm: '2begood4'
+    };
+    const currentUser = await Users.create(user);
+
+    // expect(currentUser.emailConfirmCode).not.toBeUndefined();
+    expect(currentUser.emailConfirmCode).toEqual(expect.any(String));
+  });
+
   afterAll(async () => {
     await mongoose.connection.close();
   });
