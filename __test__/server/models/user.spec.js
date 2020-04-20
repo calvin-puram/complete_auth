@@ -16,7 +16,7 @@ const connectDB = require('../../../config/db');
 describe('The Users Model', () => {
   const user = {
     name: 'puram calvin',
-    email: 'cpuram@gmail.com',
+    email: 'zpuram@gmail.com',
     password: '2begood4',
     passwordConfirm: '2begood4'
   };
@@ -50,8 +50,8 @@ describe('The Users Model', () => {
   describe('The Compare Password Method', () => {
     it('should compare the candidate password and pasword in the database', async () => {
       const loginUser = {
-        email: 'cpuram@gmail.com',
-        password: '2begood4'
+        email: user.email,
+        password: user.password
       };
 
       const verifyUser = await Users.findOne({ email: loginUser.email }).select(
@@ -69,7 +69,7 @@ describe('The Users Model', () => {
 
   describe('The Forgot Password', () => {
     it('should be called when user forgot his password', async () => {
-      const email = 'cpuram@gmail.com';
+      const { email } = user;
       const checkUser = await Users.findOne({ email });
       await checkUser.createForgotPasswordToken();
 
