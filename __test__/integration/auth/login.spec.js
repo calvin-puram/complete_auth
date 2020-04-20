@@ -3,8 +3,8 @@
  */
 
 /* eslint-disable no-undef */
+/* eslint-disable node/no-unpublished-require */
 
-// eslint-disable-next-line node/no-unpublished-require
 const supertest = require('supertest');
 
 const { connectDB, closeDB } = require('../../server/utils/mongoose');
@@ -12,9 +12,9 @@ const Users = require('../../../models/Users');
 const server = require('../../../app');
 
 const app = () => supertest(server);
-const confirmEmailURL = '/api/v1/auth/email/confirm';
+const LOGIN_URL = '/api/v1/auth/login';
 
-describe('The Email Confirm Process', () => {
+describe('The Login Process', () => {
   const user = {
     name: 'puram calvin',
     email: 'cpuram@gmail.com',
@@ -29,26 +29,20 @@ describe('The Email Confirm Process', () => {
     currentUser = await Users.create(user);
   });
 
-  it('should throw error if user is not found with the token provided', async () => {
-    const res = await app()
-      .patch(confirmEmailURL)
-      .send({ token: 'zxxcccxc' });
-
-    expect(res.status).toBe(401);
-  });
-
-  it('should set confirm email to users account', async () => {
-    const token = await currentUser.emailConfirmCode;
+  it('should log user', async () => {
+    const loggedInUser = {
+      email: user.email,
+      password: user.password
+    };
 
     const res = await app()
-      .patch(confirmEmailURL)
-      .send({ token });
+      .post(LOGIN_URL)
+      .send(loggedInUser);
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(201);
     expect(res.body.success).toBe(true);
+    expect(res.body.token).toBeDefined();
     expect(res.body.user).toBeDefined();
-    expect(res.body.user.emailConfirmCode).toBeNull();
-    expect(res.body.user.emailConfirmDate).toBeDefined();
   });
 
   afterAll(async () => {

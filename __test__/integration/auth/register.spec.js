@@ -10,9 +10,6 @@ const supertest = require('supertest');
 const { connectDB, closeDB } = require('../../server/utils/mongoose');
 const Users = require('../../../models/Users');
 const server = require('../../../app');
-const auth = require('../../../controller/authController');
-const AppError = require('../../../utils/custormError');
-const Response = require('../../server/utils/response');
 
 const app = () => supertest(server);
 const REGISTER_URL = '/api/v1/auth/register';
