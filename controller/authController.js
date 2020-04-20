@@ -23,6 +23,13 @@ exports.register = catchAsync(async (req, res, next) => {
   if (!name || !email || !password || !passwordConfirm) {
     return next(new AppError('all fields are required', 400));
   }
+
+  const checkUser = await Users.findOne({ email });
+
+  if (checkUser) {
+    return next(new AppError('user already registered', 400));
+  }
+
   const user = await Users.create(req.body);
 
   sendToken(user, res, 201);
