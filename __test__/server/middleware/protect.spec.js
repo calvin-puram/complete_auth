@@ -21,6 +21,7 @@ describe('The Protect Auth Middleware', () => {
   let currentUser;
   beforeAll(async () => {
     await connectDB();
+    await Users.deleteMany();
     currentUser = await Users.create(user);
   });
 

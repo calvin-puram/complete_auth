@@ -22,6 +22,7 @@ describe('The Users Model', () => {
 
   beforeAll(async () => {
     await connectDB();
+    await Users.deleteMany();
     currentUser = await Users.create(user);
   });
 

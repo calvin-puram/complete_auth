@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1587376882138" clover="3.2.0">
-  <project timestamp="1587376882138" name="All files">
-    <metrics statements="76" coveredstatements="71" conditionals="14" coveredconditionals="10" methods="17" coveredmethods="15" elements="107" coveredelements="96" complexity="0" loc="76" ncloc="76" packages="5" files="7" classes="7"/>
+<coverage generated="1587380145315" clover="3.2.0">
+  <project timestamp="1587380145316" name="All files">
+    <metrics statements="69" coveredstatements="65" conditionals="14" coveredconditionals="10" methods="16" coveredmethods="14" elements="99" coveredelements="89" complexity="0" loc="69" ncloc="69" packages="4" files="6" classes="6"/>
     <package name="__test__.server.utils">
       <metrics statements="11" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="2"/>
       <file name="mongoose.js" path="C:\Users\user\Desktop\personal projects\complete_auth\__test__\server\utils\mongoose.js">
         <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="2" count="1" type="stmt"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="7" count="1" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="16" count="1" type="stmt"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
       </file>
       <file name="response.js" path="C:\Users\user\Desktop\personal projects\complete_auth\__test__\server\utils\response.js">
         <metrics statements="4" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
@@ -20,19 +20,6 @@
         <line num="3" count="0" type="stmt"/>
         <line num="4" count="0" type="stmt"/>
         <line num="8" count="0" type="stmt"/>
-      </file>
-    </package>
-    <package name="config">
-      <metrics statements="7" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-      <file name="db.js" path="C:\Users\user\Desktop\personal projects\complete_auth\config\db.js">
-        <metrics statements="7" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="5" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
-        <line num="17" count="1" type="stmt"/>
       </file>
     </package>
     <package name="middleware">
