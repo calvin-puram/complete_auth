@@ -8,25 +8,20 @@ const Mail = require('@fullstackjs/mail');
 
 const UsersSchema = new mongoose.Schema({
   name: {
-    type: String,
-    required: [true, 'name is required']
+    type: String
   },
   email: {
     type: String,
-    required: [true, 'email is required'],
     validate: [validator.isEmail, 'Invalid Email'],
-    lowercase: true,
-    unique: true
+    lowercase: true
   },
   password: {
     type: String,
-    required: [true, 'password is required'],
     minlength: 8,
     select: false
   },
   passwordConfirm: {
     type: String,
-    required: [true, 'please confirm your password'],
     validate: {
       validator: function(val) {
         return this.password === val;
