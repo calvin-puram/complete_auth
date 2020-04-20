@@ -46,6 +46,8 @@ describe('The Email Confirm Process', () => {
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
     expect(res.body.user).toBeDefined();
+    expect(res.body.user.emailConfirmCode).toBeNull();
+    expect(res.body.user.emailConfirmDate).toBeDefined();
   });
 
   afterAll(async () => {

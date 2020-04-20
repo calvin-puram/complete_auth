@@ -11,7 +11,7 @@
     "server": "node server.js",
     "client-install": "npm install --prefix client",
     "client": "npm run serve --prefix client",
-    "test": "jest  --coverage",
+    "test": "jest ",
     "dev": "concurrently \" npm run server-dev\" \"npm run client\""
   },
   "author": "calvin Job <puram.calvin@gmail.com>",

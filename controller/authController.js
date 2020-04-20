@@ -21,13 +21,19 @@ const sendToken = async (user, res, statusCode) => {
 exports.register = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
   if (!name || !email || !password || !passwordConfirm) {
-    return next(new AppError('all fields are required', 400));
+    return res.status(400).json({
+      success: false,
+      error: 'all fields are required'
+    });
   }
 
   const checkUser = await Users.findOne({ email });
 
   if (checkUser) {
-    return next(new AppError('user already registered', 400));
+    return res.status(400).json({
+      success: false,
+      error: 'user already registered'
+    });
   }
 
   const user = await Users.create(req.body);
@@ -120,7 +126,6 @@ exports.confirmAccount = catchAsync(async (req, res, next) => {
     return res.status(401).json({
       success: false,
       error: 'invalid credencials'
-      // stack: err.stack
     });
   }
 

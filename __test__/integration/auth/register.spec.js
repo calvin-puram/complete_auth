@@ -3,6 +3,7 @@
  */
 
 /* eslint-disable no-undef */
+/* eslint-disable node/no-unpublished-require */
 
 const supertest = require('supertest');
 
@@ -44,28 +45,28 @@ describe('The Registration Process', () => {
     const req = {
       body: {}
     };
-    const res = new Response();
-    const next = jest.fn();
 
-    await auth.register(req, res, next);
+    const res = await app()
+      .post(REGISTER_URL)
+      .send(req.body);
 
-    expect(next).toHaveBeenCalledWith(
-      new AppError('all fields are required', 400)
-    );
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.error).toBe('all fields are required');
   });
 
   it('should throw error if email exist', async () => {
     const req = {
       body: user
     };
-    const res = new Response();
-    const next = jest.fn();
 
-    await auth.register(req, res, next);
+    const res = await app()
+      .post(REGISTER_URL)
+      .send(req.body);
 
-    expect(next).toHaveBeenCalledWith(
-      new AppError('user already registered', 400)
-    );
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.error).toBe('user already registered');
   });
 
   afterAll(async () => {
