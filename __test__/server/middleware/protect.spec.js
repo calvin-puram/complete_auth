@@ -4,26 +4,11 @@
 
 /* eslint-disable no-undef */
 
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
-
-dotenv.config({ path: './.env' });
 const Users = require('../../../models/Users');
-const connectDB = require('../../../config/db');
 const protect = require('../../../middleware/protect');
 const AppError = require('../../../utils/custormError');
-
-class Response {
-  status(status) {
-    this.status = status;
-    return this;
-  }
-
-  data(data) {
-    return data;
-  }
-}
+const Response = require('../utils/response');
+const { connectDB, closeDB } = require('../utils/mongoose');
 
 describe('The Protect Auth Middleware', () => {
   const user = {
@@ -74,6 +59,6 @@ describe('The Protect Auth Middleware', () => {
   });
 
   afterAll(async () => {
-    await mongoose.connection.close();
+    await closeDB();
   });
 });
