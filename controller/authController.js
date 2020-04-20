@@ -117,7 +117,11 @@ exports.confirmAccount = catchAsync(async (req, res, next) => {
   const currentUser = await Users.findOne({ emailConfirmCode: token });
 
   if (!currentUser) {
-    return next(new AppError('invalid credentials', 401));
+    return res.status(401).json({
+      success: false,
+      error: 'invalid credencials'
+      // stack: err.stack
+    });
   }
 
   const user = await Users.findByIdAndUpdate(

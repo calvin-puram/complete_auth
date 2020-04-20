@@ -9,9 +9,6 @@ const supertest = require('supertest');
 const { connectDB, closeDB } = require('../../server/utils/mongoose');
 const Users = require('../../../models/Users');
 const server = require('../../../app');
-const auth = require('../../../controller/authController');
-const AppError = require('../../../utils/custormError');
-const Response = require('../../server/utils/response');
 
 const app = () => supertest(server);
 const confirmEmailURL = '/api/v1/auth/email/confirm';
@@ -32,15 +29,11 @@ describe('The Email Confirm Process', () => {
   });
 
   it('should throw error if user is not found with the token provided', async () => {
-    const req = {
-      body: { token: 'asasa' }
-    };
-    const res = new Response();
-    const next = jest.fn();
+    const res = await app()
+      .patch(confirmEmailURL)
+      .send({ token: 'zxxcccxc' });
 
-    await auth.confirmAccount(req, res, next);
-
-    expect(next).toHaveBeenCalledWith(new AppError('invalid credentials', 401));
+    expect(res.status).toBe(401);
   });
 
   it('should set confirm email to users account', async () => {
