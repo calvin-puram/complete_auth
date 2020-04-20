@@ -4,14 +4,11 @@
 
 /* eslint-disable no-undef */
 
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-dotenv.config({ path: './.env' });
 const Users = require('../../../models/Users');
-const connectDB = require('../../../config/db');
+const { connectDB, closeDB } = require('../utils/mongoose');
 
 describe('The Users Model', () => {
   const user = {
@@ -79,6 +76,6 @@ describe('The Users Model', () => {
   });
 
   afterAll(async () => {
-    await mongoose.connection.close();
+    await closeDB();
   });
 });
