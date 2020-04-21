@@ -74,7 +74,10 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   const user = await Users.findOne({ email });
 
   if (!user) {
-    return next(new AppError('email not registered', 400));
+    return res.status(400).json({
+      success: false,
+      error: 'email not registered'
+    });
   }
 
   await user.createForgotPasswordToken();
