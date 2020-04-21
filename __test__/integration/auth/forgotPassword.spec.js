@@ -54,6 +54,10 @@ describe('The Forgot Password Process', () => {
     expect(res.status).toBe(200);
     expect(res.body.success).toBeTruthy();
     expect(res.body.msg).toBe('password reset link sent');
+
+    const freshUser = await Users.findOne({ email: user.email });
+    expect(freshUser.resetPasswordExpires).toBeDefined();
+    expect(freshUser.resetPasswordToken).toBeDefined();
   });
 
   afterEach(async () => {

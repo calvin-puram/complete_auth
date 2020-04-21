@@ -105,7 +105,10 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   }).select('+password');
 
   if (!user) {
-    return next(new AppError('invalid credentials or token has expired', 401));
+    return res.status(401).json({
+      success: false,
+      error: 'invalid credentials or token has expired'
+    });
   }
 
   try {
