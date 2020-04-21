@@ -27,9 +27,9 @@ describe('The Reset Password Process', () => {
     await Users.deleteMany();
   });
 
-  it('should reset user password', async () => {
-    const currentUser = await Users.create(user);
-    const token = currentUser.jwtToken();
+  it('should throw error if token has expired or invalid', async () => {
+    await Users.create(user);
+    const token = '50efa3323dc0cb08c';
     const req = {
       body: {
         password: 'liv2lov',
@@ -42,10 +42,9 @@ describe('The Reset Password Process', () => {
       .patch(RESET_PASSWORD_URL)
       .send(req.body);
 
-    expect(res.status).toBe(200);
-    expect(res.body.success).toBeTruthy();
-    expect(res.body.user.resetPasswordToken).toBeUndefined();
-    expect(res.body.user.resetPasswordExpires).toBeUndefined();
+    expect(res.status).toBe(401);
+    expect(res.body.success).toBeFalsy();
+    expect(res.body.error).toBe('invalid credentials or token has expired');
   });
 
   afterEach(async () => {

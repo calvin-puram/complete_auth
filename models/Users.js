@@ -89,6 +89,7 @@ UsersSchema.methods.sendEmailConfirm = async function() {
 
 UsersSchema.methods.createForgotPasswordToken = async function() {
   const token = crypto.randomBytes(32).toString('hex');
+  console.log(token);
   this.resetPasswordToken = crypto
     .createHash('sha256')
     .update(token)
