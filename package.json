@@ -12,6 +12,7 @@
     "client-install": "npm install --prefix client",
     "client": "npm run serve --prefix client",
     "test": "jest --coverage",
+    "test:e2e": "cypress open",
     "dev": "concurrently \" npm run server-dev\" \"npm run client\""
   },
   "author": "calvin Job <puram.calvin@gmail.com>",
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "babel-plugin-module-resolver": "^4.0.0",
+    "cypress": "^4.4.1",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.9.0",
