@@ -14,7 +14,7 @@ module.exports = catchAsync(async (req, res, next) => {
   }
 
   if (!token) {
-    res.status(401).json({
+    return res.status(401).json({
       success: false,
       error: 'you are not logged in'
     });
@@ -26,7 +26,7 @@ module.exports = catchAsync(async (req, res, next) => {
   const currentUser = await Users.findById(decode.id).select('+password');
 
   if (!currentUser) {
-    res.status(401).json({
+    return res.status(401).json({
       success: false,
       error: 'user no longer exist'
     });
