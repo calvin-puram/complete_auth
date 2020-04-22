@@ -32,12 +32,12 @@
           <li class="nav-item active">
             <router-link to="/" exact class="nav-link">Home</router-link>
           </li>
-          <li class="nav-item" v-if="!auth">
+          <li id="register-button" class="nav-item" v-if="!auth">
             <router-link to="/register" exact class="nav-link"
               >Register</router-link
             >
           </li>
-          <li class="nav-item" v-if="!auth">
+          <li id="login-button" class="nav-item" v-if="!auth">
             <router-link to="/login" exact class="nav-link">Login</router-link>
           </li>
           <li class="nav-item ml-3" v-if="auth">
