@@ -24,6 +24,9 @@ describe('The Protect Auth Middleware', () => {
     await Users.deleteMany();
     currentUser = await Users.create(user);
   });
+  afterAll(async () => {
+    await closeDB();
+  });
 
   it('should check if request token is valid and called next', async () => {
     const token = await currentUser.jwtToken();
@@ -40,26 +43,6 @@ describe('The Protect Auth Middleware', () => {
     await protect(req, res, next);
 
     expect(next).toHaveBeenCalled();
-  });
-
-  it('should throw error if no token', async () => {
-    const req = {
-      headers: {
-        authorization: ''
-      }
-    };
-
-    const res = new Response();
-
-    const next = jest.fn();
-    await protect(req, res, next);
-
-    expect(next).toHaveBeenCalledWith(
-      new AppError('you are not logged in', 401)
-    );
-  });
-
-  afterAll(async () => {
-    await closeDB();
+    expect(req.user).toBeDefined();
   });
 });
