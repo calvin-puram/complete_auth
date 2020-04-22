@@ -22,19 +22,25 @@ describe('The Forgot Password Process', () => {
     passwordConfirm: '2begood4'
   };
 
-  beforeEach(async () => {
+  const forgotEmail = {
+    email: user.email
+  };
+  let request;
+  beforeAll(async () => {
     await connectDB();
     await Users.deleteMany();
+    request = () => {
+      return app()
+        .post(FORGOT_PASSWORD_URL)
+        .send(forgotEmail);
+    };
+  });
+  afterAll(async () => {
+    await closeDB();
   });
 
   it('should throw error if user email is not found', async () => {
-    const req = {
-      body: { email: user.email }
-    };
-
-    const res = await app()
-      .post(FORGOT_PASSWORD_URL)
-      .send(req.body);
+    const res = await request();
 
     expect(res.status).toBe(400);
     expect(res.body.success).toBeFalsy();
@@ -43,13 +49,8 @@ describe('The Forgot Password Process', () => {
 
   it('should send reset token to user email ', async () => {
     await Users.create(user);
-    const req = {
-      body: { email: user.email }
-    };
 
-    const res = await app()
-      .post(FORGOT_PASSWORD_URL)
-      .send(req.body);
+    const res = await request();
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBeTruthy();
@@ -58,9 +59,5 @@ describe('The Forgot Password Process', () => {
     const freshUser = await Users.findOne({ email: user.email });
     expect(freshUser.resetPasswordExpires).toBeDefined();
     expect(freshUser.resetPasswordToken).toBeDefined();
-  });
-
-  afterEach(async () => {
-    await closeDB();
   });
 });
