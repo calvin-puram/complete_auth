@@ -22,21 +22,29 @@ describe('The Login Process', () => {
     passwordConfirm: '2begood4'
   };
 
+  let loggedInUser = {
+    email: user.email,
+    password: user.password
+  };
+
+  let request;
   beforeAll(async () => {
     await connectDB();
     await Users.deleteMany();
     await Users.create(user);
+    request = () => {
+      return app()
+        .post(LOGIN_URL)
+        .send(loggedInUser);
+    };
+  });
+
+  afterAll(async () => {
+    await closeDB();
   });
 
   it('should log user', async () => {
-    const loggedInUser = {
-      email: user.email,
-      password: user.password
-    };
-
-    const res = await app()
-      .post(LOGIN_URL)
-      .send(loggedInUser);
+    const res = await request();
 
     expect(res.status).toBe(201);
     expect(res.body.success).toBe(true);
@@ -45,11 +53,9 @@ describe('The Login Process', () => {
   });
 
   it('should throw if email and password are not provided', async () => {
-    const loggedInUser = {};
+    loggedInUser = {};
 
-    const res = await app()
-      .post(LOGIN_URL)
-      .send(loggedInUser);
+    const res = await request();
 
     expect(res.status).toBe(400);
     expect(res.body.success).toBe(false);
@@ -57,36 +63,28 @@ describe('The Login Process', () => {
   });
 
   it('show throw an error if no user is found', async () => {
-    const loggedInUser = {
+    loggedInUser = {
       email: 'xpuram@gmail.com',
       password: '2begood4'
     };
 
-    const res = await app()
-      .post(LOGIN_URL)
-      .send(loggedInUser);
+    const res = await request();
 
     expect(res.status).toBe(401);
     expect(res.body.success).toBe(false);
     expect(res.body.error).toBe('Invalid Credentials');
   });
 
-  it('show throw an error if no user password is invalid', async () => {
-    const loggedInUser = {
+  it('show throw an error if  user password is invalid', async () => {
+    loggedInUser = {
       email: user.email,
       password: '2begood444'
     };
 
-    const res = await app()
-      .post(LOGIN_URL)
-      .send(loggedInUser);
+    const res = await request();
 
     expect(res.status).toBe(401);
     expect(res.body.success).toBe(false);
     expect(res.body.error).toBe('Invalid Credentials');
-  });
-
-  afterAll(async () => {
-    await closeDB();
   });
 });
