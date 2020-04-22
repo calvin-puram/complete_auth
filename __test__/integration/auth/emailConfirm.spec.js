@@ -23,6 +23,7 @@ describe('The Email Confirm Process', () => {
   };
 
   let currentUser;
+
   beforeAll(async () => {
     await connectDB();
     await Users.deleteMany();

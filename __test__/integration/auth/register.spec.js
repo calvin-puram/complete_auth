@@ -15,22 +15,29 @@ const app = () => supertest(server);
 const REGISTER_URL = '/api/v1/auth/register';
 
 describe('The Registration Process', () => {
-  const user = {
+  let user = {
     name: 'puram calvin',
     email: 'cpuram@gmail.com',
     password: '2begood4',
     passwordConfirm: '2begood4'
   };
 
+  let request;
   beforeAll(async () => {
     await connectDB();
     await Users.deleteMany();
+    request = () => {
+      return app()
+        .post(REGISTER_URL)
+        .send(user);
+    };
+  });
+  afterAll(async () => {
+    await closeDB();
   });
 
   it('should register a user', async () => {
-    const response = await app()
-      .post(REGISTER_URL)
-      .send(user);
+    const response = await request();
 
     expect(response.status).toBe(201);
     expect(response.body.success).toBeTruthy();
@@ -38,35 +45,21 @@ describe('The Registration Process', () => {
     expect(response.body.user).toBeDefined();
   });
 
-  it('should throw error if fields are empty', async () => {
-    const req = {
-      body: {}
-    };
-
-    const res = await app()
-      .post(REGISTER_URL)
-      .send(req.body);
-
-    expect(res.status).toBe(400);
-    expect(res.body.success).toBe(false);
-    expect(res.body.error).toBe('all fields are required');
-  });
-
   it('should throw error if email exist', async () => {
-    const req = {
-      body: user
-    };
-
-    const res = await app()
-      .post(REGISTER_URL)
-      .send(req.body);
+    const res = await request();
 
     expect(res.status).toBe(400);
     expect(res.body.success).toBe(false);
     expect(res.body.error).toBe('user already registered');
   });
 
-  afterAll(async () => {
-    await closeDB();
+  it('should throw error if fields are empty', async () => {
+    user = {};
+
+    const res = await request();
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.error).toBe('all fields are required');
   });
 });
