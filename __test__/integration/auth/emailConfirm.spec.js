@@ -23,36 +23,40 @@ describe('The Email Confirm Process', () => {
   };
 
   let currentUser;
-
-  beforeAll(async () => {
+  let token;
+  let request;
+  beforeEach(async () => {
     await connectDB();
     await Users.deleteMany();
     currentUser = await Users.create(user);
+    request = () => {
+      return app()
+        .patch(confirmEmailURL)
+        .send({ token });
+    };
+  });
+  afterEach(async () => {
+    await closeDB();
   });
 
   it('should throw error if user is not found with the token provided', async () => {
-    const res = await app()
-      .patch(confirmEmailURL)
-      .send({ token: 'zxxcccxc' });
+    token = 'sghdjdhdsdsgs';
+    const res = await request();
 
     expect(res.status).toBe(401);
+    expect(res.body.success).toBeFalsy();
+    expect(res.body.error).toBe('invalid credencials');
   });
 
   it('should set confirm email to users account', async () => {
-    const token = await currentUser.emailConfirmCode;
+    token = await currentUser.emailConfirmCode;
 
-    const res = await app()
-      .patch(confirmEmailURL)
-      .send({ token });
+    const res = await request();
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
     expect(res.body.user).toBeDefined();
     expect(res.body.user.emailConfirmCode).toBeNull();
     expect(res.body.user.emailConfirmDate).toBeDefined();
-  });
-
-  afterAll(async () => {
-    await closeDB();
   });
 });

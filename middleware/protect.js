@@ -1,7 +1,7 @@
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const Users = require('../models/Users');
-const AppError = require('../utils/custormError');
+
 const catchAsync = require('../utils/catchAsync');
 
 //@desc   protect route
@@ -14,7 +14,10 @@ module.exports = catchAsync(async (req, res, next) => {
   }
 
   if (!token) {
-    return next(new AppError('you are not logged in', 401));
+    res.status(401).json({
+      success: false,
+      error: 'you are not logged in'
+    });
   }
 
   const decode = await promisify(jwt.verify)(token, process.env.JWT_SECERT);
@@ -23,7 +26,10 @@ module.exports = catchAsync(async (req, res, next) => {
   const currentUser = await Users.findById(decode.id).select('+password');
 
   if (!currentUser) {
-    return next(new AppError('user no longer exist', 401));
+    res.status(401).json({
+      success: false,
+      error: 'user no longer exist'
+    });
   }
 
   req.user = currentUser;

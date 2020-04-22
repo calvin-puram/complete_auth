@@ -153,13 +153,12 @@ exports.confirmAccount = catchAsync(async (req, res, next) => {
 //@route  Post /api/auth/email/resend
 //@access Private
 exports.resendEmailConfirm = catchAsync(async (req, res, next) => {
-  const { emailConfirmDate } = req.body;
-  if (!req.user.emailConfirmDate || !emailConfirmDate) {
+  if (!req.user.emailConfirmDate) {
     await req.user.sendEmailConfirm();
-  } else if (req.user.emailConfirmDate || emailConfirmDate) {
-    res.status(200).json({
-      success: true,
-      msg: 'confirm email sent'
-    });
   }
+
+  res.status(200).json({
+    success: true,
+    msg: 'confirm email sent'
+  });
 });
