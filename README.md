@@ -2,6 +2,17 @@
 
 > A complete authentication app with login, register, forgot password, reset password functunality.
 
+- Jest for unit testing
+- supertest for integration test
+- cypress for end 2 end testing
+
+### Stack Used
+
+- Nodejs
+- Express
+- Mongodb
+- Vuejs
+
 ![home](/public/img/home.png)
 ![home](/public/img/login.png)
 ![home](/public/img/forgot.png)
