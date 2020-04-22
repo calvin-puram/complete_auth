@@ -112,7 +112,7 @@ const mutations = {
   register_state(state, data) {
     state.user = data.user;
     state.token = data.token;
-    state.errors = null;
+    state.errors = '';
   },
 
   error(state, err) {

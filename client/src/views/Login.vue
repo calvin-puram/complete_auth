@@ -33,6 +33,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="form-group">
                   <button
+                    id="submit-login"
                     type="submit"
                     :disabled="loading"
                     class="btn btn-primary"
@@ -85,6 +86,7 @@ export default {
           if (res && res.data.success) {
             this.setAuth(res.data);
             this.$noty.success('Your logged in successfully!');
+            this.$router.push('/');
           } else {
             this.$noty.error(this.getErrors);
           }

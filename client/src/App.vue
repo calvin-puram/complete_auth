@@ -41,12 +41,14 @@
             <router-link to="/login" exact class="nav-link">Login</router-link>
           </li>
           <li class="nav-item ml-3" v-if="auth">
-            <a class="nav-link" href="#" @click.prevent="unsetAuth">Logout</a>
+            <a id="logout" class="nav-link" href="#" @click.prevent="unsetAuth"
+              >Logout</a
+            >
           </li>
 
           <li class="d-flex align-items-center mt-1 ml-5" v-if="auth">
             <i class="fas fa-2x fa-user-circle nav-link"></i>
-            <span>{{ getUserName.name }}</span>
+            <span id="name">{{ getUserName.name }}</span>
           </li>
         </ul>
       </div>
