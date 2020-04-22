@@ -1,7 +1,6 @@
 /* eslint-disable node/no-unpublished-require */
-const crypto = require('crypto');
+
 const Users = require('../models/Users');
-const AppError = require('../utils/custormError');
 const catchAsync = require('../utils/catchAsync');
 
 const sendToken = async (user, res, statusCode) => {

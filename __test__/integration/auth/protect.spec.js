@@ -56,7 +56,7 @@ describe('The Auth Protect Middleware', () => {
     const res = await request();
 
     expect(res.status).toBe(401);
-    expect(res.body.success).toBeTruthy();
+    expect(res.body.success).toBeFalsy();
     expect(res.body.error).toBe('user no longer exist');
 
     // expect(res.status).toBe(200);

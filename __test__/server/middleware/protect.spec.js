@@ -6,7 +6,6 @@
 
 const Users = require('../../../models/Users');
 const protect = require('../../../middleware/protect');
-const AppError = require('../../../utils/custormError');
 const Response = require('../utils/response');
 const { connectDB, closeDB } = require('../utils/mongoose');
 
