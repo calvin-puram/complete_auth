@@ -20,4 +20,12 @@ describe('The Home Page', () => {
 
     cy.url().should('contain', '/login');
   });
+
+  it('should navigate to register page when clicked', () => {
+    cy.visit('/');
+
+    cy.get('#register-button').click();
+
+    cy.url().should('contain', '/register');
+  });
 });
