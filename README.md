@@ -4,7 +4,7 @@
 
 - Jest for unit testing
 - supertest for integration test
-- cypress for end 2 end testing
+- cypress for e2e testing
 
 ### Stack Used
 
@@ -34,8 +34,14 @@ and to install the vuejs packages run
    client-install
 ```
 
-to start run
+to start run app in development
 
 ```
     npm run dev
+```
+
+to start run test
+
+```
+   npm run test
 ```
